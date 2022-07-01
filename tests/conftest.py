@@ -1,34 +1,43 @@
+import pytest
 from pytest import fixture
 
 import core.api_methods as api_methods
-import config
 
-URL = config.URL
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--url",
+        action = "store",
+        default = "https://jsonplaceholder.typicode.com/posts/",
+    )
+
+@fixture(scope="session", autouse=True)
+def base_url(request):
+    return request.config.getoption("--url")
+
+@fixture(scope="function")
+def posts_list(base_url):
+    yield api_methods.get_posts_list(base_url)
 
 
 @fixture(scope="function")
-def posts_list():
-    yield api_methods.get_posts_list(URL)
-
-
-@fixture(scope="function")
-def post():
+def post(base_url):
     user_id = 1
-    yield api_methods.get_post(URL, user_id)
+    yield api_methods.get_post(base_url, user_id)
 
 
 @fixture(scope="function")
-def new_post():
+def new_post(base_url):
     payload = {
         "title": "foo",
         "body": "bar1",
         "userId": 1
     }
-    yield api_methods.create_post(URL, json=payload)
+    yield api_methods.create_post(base_url, json=payload)
 
 
 @fixture(scope="function")
-def updated_post():
+def updated_post(base_url):
     user_id = 1
     payload = {
         "id": 1,
@@ -36,19 +45,19 @@ def updated_post():
         "body": "bar2",
         "userId": 1
     }
-    yield api_methods.put_post(URL, user_id, json=payload)
+    yield api_methods.put_post(base_url, user_id, json=payload)
 
 
 @fixture(scope="function")
-def patched_post():
+def patched_post(base_url):
     user_id = 1
     payload = {
         "title": "foo123"
     }
-    yield api_methods.path_post(URL, user_id, json=payload)
+    yield api_methods.path_post(base_url, user_id, json=payload)
 
 
 @fixture(scope="function")
-def deleted_post():
+def deleted_post(base_url):
     post_id = 1
-    yield api_methods.delete_post(URL, post_id)
+    yield api_methods.delete_post(base_url, post_id)
