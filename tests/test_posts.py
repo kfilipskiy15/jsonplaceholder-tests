@@ -10,7 +10,7 @@ from core import data
 post_schema = "core/files/post_schema.json"
 
 
-class BaseActions:
+class TestBaseActions:
 
     def test_get_posts_list(self, get_posts_list):
         assert_that(get_posts_list.status_code).is_equal_to(requests.codes.ok)
