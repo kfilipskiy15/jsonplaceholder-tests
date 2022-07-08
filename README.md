@@ -1,8 +1,8 @@
 # jsonplaceholder-tests
 This repository contains tests for https://jsonplaceholder.typicode.com/
 
-### core - contains necessary project files
-### tests - contains tests
+#### core - contains necessary project files
+#### tests - contains tests
 
 ### Requirements:
 Python 3.8 or greater, PyTest, Requests, Cerberus, assertpy, pytest-xdinst,
