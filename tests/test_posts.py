@@ -60,10 +60,9 @@ class TestBaseActions:
         """Regarding documentation: resource will not be really updated on the
          server, but it will be faked as if."""
 
-        assert_that(patch_post.status_code).is_equal_to(requests.codes.ok)
+        assert_that(patch_post.status_code, requests.codes.ok)
         assert_that(patch_post.body["title"]).is_equal_to("foo123")
         assert_that(patch_post.body["userId"]).is_equal_to(1)
-
         validate(post_schema, patch_post.body)
 
     @pytest.mark.parametrize('delete_post', [1], indirect=True)
